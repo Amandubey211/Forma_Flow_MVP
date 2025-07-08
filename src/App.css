@@ -1,0 +1,25 @@
+/* Custom text selection */
+::selection {
+  background: #a5b4fc; /* indigo-300 */
+  color: #1e1b4b; /* indigo-950 */
+}
+
+::-moz-selection {
+  background: #a5b4fc;
+  color: #1e1b4b;
+}
+
+/* Hide scrollbar for testimonial carousel */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
