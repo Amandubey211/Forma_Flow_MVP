@@ -1,15 +1,28 @@
 @import "tailwindcss";
-/* For scrollbar styling */
+
+/* 
+  Custom Scrollbar Styling for a Light Theme
+  This scrollbar is designed to be subtle and match the clean, slate-based UI.
+*/
+
+/* Sets the width of the entire scrollbar. */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px; /* Also style the horizontal scrollbar */
 }
+
+/* The "track" (the background of the scrollbar). */
 ::-webkit-scrollbar-track {
-  background: #1f2937;
+  background: #f1f5f9; /* slate-100 */
 }
+
+/* The draggable scrolling "thumb". */
 ::-webkit-scrollbar-thumb {
-  background: #4f46e5;
+  background: #cbd5e1; /* slate-300 */
   border-radius: 4px;
 }
+
+/* The "thumb" on hover. */
 ::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
+  background: #94a3b8; /* slate-400 */
 }

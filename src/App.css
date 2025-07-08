@@ -1,15 +1,25 @@
-/* Custom text selection */
+body {
+  /* This creates the dot grid background that matches the light theme */
+  background-color: #f8f9fa; /* A very light gray background (slate-50) */
+  background-image: radial-gradient(#d7dde3 1px, transparent 1px);
+  background-size: 16px 16px;
+  font-family: "Inter", sans-serif; /* Recommended for a clean UI, optional */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom text selection colors that match the new slate theme */
 ::selection {
-  background: #a5b4fc; /* indigo-300 */
-  color: #1e1b4b; /* indigo-950 */
+  background: #cbd5e1; /* slate-300 */
+  color: #0f172a; /* slate-900 */
 }
 
 ::-moz-selection {
-  background: #a5b4fc;
-  color: #1e1b4b;
+  background: #cbd5e1; /* slate-300 */
+  color: #0f172a; /* slate-900 */
 }
 
-/* Hide scrollbar for testimonial carousel */
+/* Hide scrollbar for specific elements if needed */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -19,7 +29,7 @@
   scrollbar-width: none;
 }
 
-/* Smooth scrolling */
+/* Enable smooth scrolling across the application */
 html {
   scroll-behavior: smooth;
 }

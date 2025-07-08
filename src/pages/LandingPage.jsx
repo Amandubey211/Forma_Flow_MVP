@@ -69,7 +69,7 @@ const LandingPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.8 }}
-            className="mt-8 flex justify-center bg-indigo-300"
+            className="mt-8 flex justify-center"
           >
             <Link to={hero.cta.path}>
               <Button size="lg" className="group cursor-pointer">

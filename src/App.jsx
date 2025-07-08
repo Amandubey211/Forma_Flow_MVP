@@ -4,7 +4,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import DashboardPage from "./pages/DashboardPage";
 import BuilderPage from "./pages/BuilderPage";
 import AppLayout from "./components/AppLayout";
-// import FormPage from "./pages/FormPage"; // donrt
+import FormPage from "./pages/FormPage"; // donrt
 
 const App = () => {
   return (
@@ -53,8 +53,19 @@ const App = () => {
           </AppLayout>
         }
       />
-
-      {/* <Route path="/form/:templateId" element={<FormPage />} /> */}
+      <Route
+        path="/form/:templateId"
+        element={
+          <AppLayout
+            seoProps={{
+              title: "Form",
+              description: "Form",
+            }}
+          >
+            <FormPage />
+          </AppLayout>
+        }
+      />
       <Route
         path="*"
         element={

@@ -98,7 +98,7 @@ const DashboardPage = () => {
                     size="sm"
                     className="flex items-center gap-2"
                   >
-                    <Eye className="h-4 w-4" /> Preview
+                    <Eye className="h-4 w-4" /> Preview & Fill
                   </Button>
                 </Link>
                 <div className="flex gap-2">

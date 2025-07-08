@@ -3,7 +3,7 @@ export const landingPageConfig = {
     logo: "FormaFlow",
     links: [
       // { name: "Features", path: "/features" },
-      // { name: "Templates", path: "/templates" },
+      { name: "Home", path: "/" },
       { name: "Dashboard", path: "/dashboard" },
       { name: "About", path: "/about" },
     ],

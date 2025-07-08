@@ -1,24 +1,35 @@
-import { useDispatch, useSelector } from "react-redux";
-import { toggleTheme } from "../../features/theme/themeSlice";
-import { Moon, Sun } from "lucide-react";
+// import React, { createContext, useContext, useEffect } from "react";
+// import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-const ThemeToggle = () => {
-  const { theme } = useSelector((state) => state.theme);
-  const dispatch = useDispatch();
+// const ThemeContext = createContext();
 
-  return (
-    <button
-      onClick={() => dispatch(toggleTheme())}
-      className="p-2 cursor-pointer rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-      aria-label={`Toggle ${theme === "dark" ? "light" : "dark"} mode`}
-    >
-      {theme === "dark" ? (
-        <Sun className="h-5 w-5" />
-      ) : (
-        <Moon className="h-5 w-5" />
-      )}
-    </button>
-  );
-};
+// // Custom hook to use the ThemeContext
+// export const useTheme = () => useContext(ThemeContext);
 
-export default ThemeToggle;
+// export const ThemeProvider = ({ children }) => {
+//   // Use the existing localStorage hook to persist the theme
+//   const [theme, setTheme] = useLocalStorage("theme", "light");
+
+//   // Effect to apply the 'dark' class to the <html> element
+//   useEffect(() => {
+//     const root = window.document.documentElement;
+//     if (theme === "dark") {
+//       root.classList.add("dark");
+//     } else {
+//       root.classList.remove("dark");
+//     }
+//   }, [theme]);
+
+//   const toggleTheme = () => {
+//     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+//   };
+
+//   const value = {
+//     theme,
+//     toggleTheme,
+//   };
+
+//   return (
+//     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+//   );
+// };
