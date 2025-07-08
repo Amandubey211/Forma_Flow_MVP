@@ -1,3 +1,4 @@
+import React from "react";
 import useLenis from "../Hooks/useLenis";
 
 const LenisWrapper = ({ children }) => {
