@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Twitter, Mail, Globe } from "lucide-react"; // Added Globe for portfolio
 import SpotlightCard from "../ui/SpotlightCard";
-import AmanDubeyProfile from "../../assets/FormPreview_fillpage/AmanImage.jpeg"; // Assuming this path is correct
+import AmanDubeyProfile from "../../assets/FormPreview_fillpage/Amanimage.jpeg";
 
 // Updated with your actual links
 const socialLinks = [

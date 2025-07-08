@@ -11,6 +11,7 @@ import {
 import CurvedLoop from "../components/ui/CurvedLoop";
 import { Button } from "../components/ui/Button";
 import AmanProfileImage from "../assets/FormPreview_fillpage/Amanimage.jpeg";
+import { Footer } from "../components/layout/Footer";
 
 const experience = [
   {
@@ -216,6 +217,7 @@ const AboutPage = () => {
           </div>
         </Section>
       </div>
+      <Footer />
     </div>
   );
 };

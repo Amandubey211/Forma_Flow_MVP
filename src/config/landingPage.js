@@ -2,9 +2,9 @@ export const landingPageConfig = {
   navbar: {
     logo: "FormaFlow",
     links: [
-      // { name: "Features", path: "/features" },
       { name: "Home", path: "/" },
       { name: "Dashboard", path: "/dashboard" },
+      { name: "Pricing", path: "/pricing" },
       { name: "About", path: "/about" },
     ],
     cta: {

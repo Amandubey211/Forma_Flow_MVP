@@ -17,7 +17,7 @@ export const Footer = () => {
   const { links } = footer; // Destructure links for cleaner access
 
   return (
-    <footer className="border-t border-slate-200 bg-white">
+    <footer className="border-t border-slate-200 bg-white px-10">
       <div className="container mx-auto max-w-screen-2xl px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Left Side: Logo, Tagline, Socials */}

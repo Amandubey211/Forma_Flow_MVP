@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import ConfirmationModal from "../components/ui/ConfirmationModal";
 import EditTemplateModal from "../components/ui/EditTemplateModal";
 import { motion, AnimatePresence } from "framer-motion";
+import { Footer } from "../components/layout/Footer";
 
 const DashboardPage = () => {
   // 1. We no longer need `updateTemplateName`
@@ -235,6 +236,10 @@ const DashboardPage = () => {
               </motion.div>
             ))}
           </motion.div>
+          <div className="mt-20">
+            {" "}
+            <Footer />
+          </div>
         </motion.div>
       </div>
 

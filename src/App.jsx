@@ -2,24 +2,26 @@ import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import AppLayout from "./components/AppLayout";
 import Loader from "./components/ui/Loader";
-import AboutPage from "./pages/AboutPage";
 
-// Lazy loaded pages
+// Lazy loaded pages for better performance
 const LandingPage = lazy(() => import("./pages/LandingPage"));
-const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const BuilderPage = lazy(() => import("./pages/BuilderPage"));
 const FormPage = lazy(() => import("./pages/FormPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 const App = () => {
   return (
     <Routes>
+      {/* Landing Page Route */}
       <Route
         path="/"
         element={
           <AppLayout
             seoProps={{
-              title: "Build Forms That Feel Intuitive",
+              title: "FormaFlow | Build Forms That Feel Intuitive",
               description:
                 "Create beautiful, powerful, and accessible forms in minutes with our drag-and-drop form builder.",
             }}
@@ -31,14 +33,15 @@ const App = () => {
         }
       />
 
+      {/* Dashboard Page Route */}
       <Route
         path="/dashboard"
         element={
           <AppLayout
             seoProps={{
-              title: "Dashboard",
+              title: "Dashboard | FormaFlow",
               description:
-                "Manage your forms and view analytics in your FormaFlow dashboard.",
+                "Manage your form templates and view analytics in your FormaFlow dashboard.",
             }}
           >
             <Suspense fallback={<Loader />}>
@@ -48,33 +51,39 @@ const App = () => {
         }
       />
 
+      {/* Builder Page Route (Full Screen) */}
       <Route
         path="/builder/:templateId"
         element={
+          // This page is a full-screen experience and does not use AppLayout.
+          // SEO would be handled within BuilderPage itself if needed.
           <Suspense fallback={<Loader text="Loading Builder..." />}>
             <BuilderPage />
           </Suspense>
         }
       />
 
-      {/* The FormPage also correctly remains outside of AppLayout */}
+      {/* Form Page Route (Full Screen) */}
       <Route
         path="/form/:templateId"
         element={
+          // This page is a full-screen experience and does not use AppLayout.
+          // SEO is handled within FormPage itself.
           <Suspense fallback={<Loader text="Loading Form..." />}>
             <FormPage />
           </Suspense>
         }
       />
 
+      {/* About Page Route */}
       <Route
         path="/about"
         element={
           <AppLayout
             seoProps={{
-              title: "About",
+              title: "About Aman Dubey | FormaFlow Developer",
               description:
-                "Manage your forms and view analytics in your FormaFlow dashboard.",
+                "Learn about the developer and the technology behind the FormaFlow project.",
             }}
           >
             <Suspense fallback={<Loader />}>
@@ -84,13 +93,33 @@ const App = () => {
         }
       />
 
+      {/* Pricing Page Route */}
+      <Route
+        path="/pricing"
+        element={
+          <AppLayout
+            seoProps={{
+              title: "Pricing Plans | FormaFlow",
+              description:
+                "Choose the perfect plan for your form-building needs. Start for free.",
+            }}
+          >
+            <Suspense fallback={<Loader />}>
+              <PricingPage />
+            </Suspense>
+          </AppLayout>
+        }
+      />
+
+      {/* Not Found (404) Route */}
       <Route
         path="*"
         element={
           <AppLayout
             seoProps={{
-              title: "Page Not Found",
-              description: "The page you're looking for doesn't exist.",
+              title: "404: Page Not Found | FormaFlow",
+              description:
+                "The page you're looking for doesn't exist or has been moved.",
             }}
           >
             <Suspense fallback={<Loader />}>
