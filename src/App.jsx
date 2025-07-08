@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import AppLayout from "./components/AppLayout";
-import Loader from "./components/ui/Loader"; // 1. Import the new Loader component
+import Loader from "./components/ui/Loader";
 
 // Lazy loaded pages
 const LandingPage = lazy(() => import("./pages/LandingPage"));
@@ -23,7 +23,6 @@ const App = () => {
                 "Create beautiful, powerful, and accessible forms in minutes with our drag-and-drop form builder.",
             }}
           >
-            {/* 2. Use the Loader component as the fallback */}
             <Suspense fallback={<Loader />}>
               <LandingPage />
             </Suspense>
@@ -48,28 +47,27 @@ const App = () => {
         }
       />
 
+      {/* --- THIS IS THE CHANGE --- */}
+      {/* 
+        The BuilderPage route no longer uses AppLayout. 
+        It is now a full-screen component that renders its own header.
+        This eliminates the "double navbar" problem.
+      */}
       <Route
         path="/builder/:templateId"
         element={
-          <AppLayout
-            seoProps={{
-              title: "Builder",
-              description:
-                "Manage your forms and view analytics in your FormaFlow Builder.",
-            }}
-          >
-            <Suspense fallback={<Loader />}>
-              <BuilderPage />
-            </Suspense>
-          </AppLayout>
+          <Suspense fallback={<Loader text="Loading Builder..." />}>
+            <BuilderPage />
+          </Suspense>
         }
       />
+      {/* --- END OF CHANGE --- */}
 
-      {/* For the full-screen form page, we don't use AppLayout */}
+      {/* The FormPage also correctly remains outside of AppLayout */}
       <Route
         path="/form/:templateId"
         element={
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<Loader text="Loading Form..." />}>
             <FormPage />
           </Suspense>
         }

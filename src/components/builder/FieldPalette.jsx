@@ -11,6 +11,7 @@ import {
   UploadCloud,
   Image as ImageIcon,
   ToggleRight,
+  Construction,
 } from "lucide-react";
 import { FIELD_TYPES } from "../../lib/constants";
 import { Input } from "../ui/Input";
@@ -61,10 +62,9 @@ const PALETTE_ITEMS = [
   },
 ];
 
-// A dedicated component for each draggable item in the palette
 const PaletteItem = ({ field }) => {
   const { attributes, listeners, setNodeRef } = useDraggable({
-    id: `palette-item-${field.type}`,
+    id: `palette-item-${field.type}`, // This ID is crucial
     data: { type: field.type, isPaletteItem: true },
   });
 
@@ -82,6 +82,22 @@ const PaletteItem = ({ field }) => {
   );
 };
 
+const ComingSoonPlaceholder = ({ featureName }) => (
+  <motion.div
+    key={featureName}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    className="flex flex-col items-center justify-center text-center p-8 mt-10 bg-slate-50 rounded-lg border border-slate-200"
+  >
+    <Construction className="h-12 w-12 text-slate-400 mb-4" />
+    <h3 className="font-semibold text-slate-800">{featureName} Coming Soon!</h3>
+    <p className="text-sm text-slate-500 mt-1 max-w-xs">
+      This feature is on our roadmap and we're working hard to bring it to you.
+    </p>
+  </motion.div>
+);
+
 const FieldPalette = () => {
   const [activeTab, setActiveTab] = useState("Field");
   const [searchTerm, setSearchTerm] = useState("");
@@ -94,57 +110,76 @@ const FieldPalette = () => {
   })).filter((group) => group.fields.length > 0);
 
   return (
-    <aside className="w-1/3 max-w-sm flex-shrink-0 border-l border-slate-200 bg-white p-6">
-      <div className="flex items-center justify-around rounded-md bg-slate-100 p-1">
-        <button
-          onClick={() => setActiveTab("Field")}
-          className={`flex-1 rounded-md py-1.5 text-sm font-semibold transition-all duration-200 ${activeTab === "Field" ? "bg-white text-slate-800 shadow-sm" : "text-slate-500"}`}
-        >
-          Field
-        </button>
-        <button
-          onClick={() => setActiveTab("Workflow")}
-          className={`flex-1 rounded-md py-1.5 text-sm font-semibold transition-all duration-200 ${activeTab === "Workflow" ? "bg-white text-slate-800 shadow-sm" : "text-slate-500"}`}
-        >
-          Workflow
-        </button>
-        <button
-          onClick={() => setActiveTab("Permissions")}
-          className={`flex-1 rounded-md py-1.5 text-sm font-semibold transition-all duration-200 ${activeTab === "Permissions" ? "bg-white text-slate-800 shadow-sm" : "text-slate-500"}`}
-        >
-          Permissions
-        </button>
+    <aside className="w-1/3 max-w-sm flex flex-col border-l border-slate-200 bg-white">
+      <div className="p-6 border-b border-slate-200">
+        <div className="flex items-center justify-around rounded-md bg-slate-100 p-1">
+          <button
+            onClick={() => setActiveTab("Field")}
+            className={`flex-1 rounded-md py-1.5 text-sm font-semibold transition-all duration-200 ${activeTab === "Field" ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:bg-slate-200"}`}
+          >
+            Field
+          </button>
+          <button
+            onClick={() => setActiveTab("Workflow")}
+            className={`flex-1 rounded-md py-1.5 text-sm font-semibold transition-all duration-200 ${activeTab === "Workflow" ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:bg-slate-200"}`}
+          >
+            Workflow
+          </button>
+          <button
+            onClick={() => setActiveTab("Permissions")}
+            className={`flex-1 rounded-md py-1.5 text-sm font-semibold transition-all duration-200 ${activeTab === "Permissions" ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:bg-slate-200"}`}
+          >
+            Permissions
+          </button>
+        </div>
       </div>
 
-      <div className="relative mt-6">
-        <Input
-          placeholder="Search element"
-          className="pl-9"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <Search className="absolute left-2.5 top-2.5 h-5 w-5 text-slate-400" />
-      </div>
-
-      <div className="mt-6 space-y-6">
-        <AnimatePresence>
-          {filteredItems.map((group) => (
+      <div className="flex-1 overflow-y-auto p-6">
+        <AnimatePresence mode="wait">
+          {activeTab === "Field" && (
             <motion.div
-              key={group.group}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, x: -10 }}
+              key="field-tab"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                {group.group}
-              </h3>
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                {group.fields.map((field) => (
-                  <PaletteItem key={field.type} field={field} />
+              <div className="relative">
+                <Input
+                  placeholder="Search element"
+                  className="pl-9"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Search className="absolute left-2.5 top-2.5 h-5 w-5 text-slate-400" />
+              </div>
+              <div className="mt-6 space-y-6">
+                {filteredItems.map((group) => (
+                  <div key={group.group}>
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      {group.group}
+                    </h3>
+                    <div className="mt-3 grid grid-cols-2 gap-3">
+                      {group.fields.map((field) => (
+                        <PaletteItem key={field.type} field={field} />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </motion.div>
-          ))}
+          )}
+          {activeTab === "Workflow" && (
+            <ComingSoonPlaceholder
+              key="workflow-tab"
+              featureName="Workflow Automation"
+            />
+          )}
+          {activeTab === "Permissions" && (
+            <ComingSoonPlaceholder
+              key="permissions-tab"
+              featureName="Field Permissions"
+            />
+          )}
         </AnimatePresence>
       </div>
     </aside>

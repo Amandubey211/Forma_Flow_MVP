@@ -3,27 +3,29 @@ import { v4 as uuidv4 } from "uuid";
 export const FIELD_TYPES = {
   // Text Elements
   LABEL: "Label",
-  TEXT: "Text",
+  TEXT: "Short Answer",
   PARAGRAPH: "Paragraph",
 
   // Multiple Choice Elements
   DROPDOWN: "Dropdown",
   RADIO: "Radio",
-  CHECKBOX: "Checkbox", // A single checkbox (like Yes/No)
+  CHECKBOX: "Yes / No",
 
   // Media Elements
   UPLOAD: "Upload",
   IMAGE: "Image",
 
-  // Kept for backward compatibility if needed
+  // Legacy types for backward compatibility
   NUMBER: "Number",
-  BOOLEAN: "Boolean", // Can be mapped to Checkbox
-  ENUM: "Enum", // Can be mapped to Dropdown
+  BOOLEAN: "Boolean",
+  ENUM: "Enum",
 };
+
 export const PRE_BUILT_TEMPLATES = [
+  // --- TEMPLATE 1: Overhauled Job Application ---
   {
     id: uuidv4(),
-    name: "Job Application",
+    name: "Comprehensive Job Application",
     sections: [
       {
         id: uuidv4(),
@@ -32,8 +34,8 @@ export const PRE_BUILT_TEMPLATES = [
           {
             id: uuidv4(),
             type: FIELD_TYPES.LABEL,
-            label: "Your Details",
-            config: { level: "h2" },
+            label: "Join Our Team!",
+            config: { level: "h1" },
           },
           {
             id: uuidv4(),
@@ -45,7 +47,25 @@ export const PRE_BUILT_TEMPLATES = [
             id: uuidv4(),
             type: FIELD_TYPES.TEXT,
             label: "Email Address",
-            config: { required: true, placeholder: "aman@example.com" },
+            config: {
+              required: true,
+              placeholder: "e.g., aman.dubey@example.com",
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label: "Phone Number",
+            config: { required: true, placeholder: "+91 12345 67890" },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label: "Link to your Portfolio/Website",
+            config: {
+              required: false,
+              placeholder: "https://your-portfolio.com",
+            },
           },
         ],
       },
@@ -56,34 +76,106 @@ export const PRE_BUILT_TEMPLATES = [
           {
             id: uuidv4(),
             type: FIELD_TYPES.LABEL,
-            label: "Work History",
+            label: "Your Experience",
             config: { level: "h2" },
           },
           {
             id: uuidv4(),
-            type: FIELD_TYPES.NUMBER,
-            label: "Years of Experience",
-            config: { required: true, min: 0 },
-          },
-          {
-            id: uuidv4(),
-            type: FIELD_TYPES.ENUM,
-            label: "Primary Skill",
+            type: FIELD_TYPES.DROPDOWN,
+            label: "Years of Professional Experience",
             config: {
               required: true,
-              options: ["React", "Vue", "Angular", "Node.js"],
+              options: [
+                "0-1 Years",
+                "1-3 Years",
+                "3-5 Years",
+                "5-8 Years",
+                "8+ Years",
+              ],
             },
           },
           {
             id: uuidv4(),
-            type: FIELD_TYPES.BOOLEAN,
-            label: "Willing to relocate?",
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "Describe your most relevant past role.",
+            config: {
+              required: true,
+              placeholder:
+                "Describe your key responsibilities and achievements...",
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.UPLOAD,
+            label: "Upload your Resume/CV",
+            config: { required: true },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "Cover Letter",
+            config: {
+              required: true,
+              placeholder:
+                "Why are you a good fit for this role and our company?",
+            },
+          },
+        ],
+      },
+      {
+        id: uuidv4(),
+        title: "Skills & Qualifications",
+        fields: [
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.LABEL,
+            label: "Skill Assessment",
+            config: { level: "h2" },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.RADIO,
+            label: "Proficiency in React",
+            config: {
+              required: true,
+              options: ["Beginner", "Intermediate", "Advanced", "Expert"],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.RADIO,
+            label: "Proficiency in Node.js",
+            config: {
+              required: true,
+              options: ["Beginner", "Intermediate", "Advanced", "Expert"],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label:
+              "What is your expected annual salary (in your local currency)?",
+            config: { required: false, placeholder: "e.g., 1,200,000 INR" },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.CHECKBOX,
+            label:
+              "Are you authorized to work in the country of this job's location?",
+            config: { required: true },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.CHECKBOX,
+            label: "Are you willing to relocate if necessary?",
             config: { required: false },
           },
         ],
       },
     ],
   },
+
+  // --- TEMPLATE 2: Your Project Showcase (Unchanged) ---
   {
     id: "showcase-template-01", // Use a predictable ID for easy access
     name: "Project Progress Showcase",
@@ -173,9 +265,11 @@ export const PRE_BUILT_TEMPLATES = [
       },
     ],
   },
+
+  // --- TEMPLATE 3: Overhauled Customer Feedback ---
   {
     id: uuidv4(),
-    name: "Customer Feedback",
+    name: "In-Depth Customer Feedback",
     sections: [
       {
         id: uuidv4(),
@@ -184,39 +278,331 @@ export const PRE_BUILT_TEMPLATES = [
           {
             id: uuidv4(),
             type: FIELD_TYPES.LABEL,
-            label: "Tell Us What You Think",
+            label: "Tell Us What You Think!",
             config: { level: "h1" },
           },
           {
             id: uuidv4(),
-            type: FIELD_TYPES.ENUM,
-            label: "Overall Satisfaction",
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "Which product/service are you providing feedback for?",
+            config: {
+              required: true,
+              placeholder: "e.g., The Form Builder App",
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.RADIO,
+            label: "How would you rate your overall satisfaction?",
             config: {
               required: true,
               options: [
-                "Very Satisfied",
-                "Satisfied",
+                "⭐ Very Unsatisfied",
+                "⭐⭐ Unsatisfied",
+                "⭐⭐⭐ Neutral",
+                "⭐⭐⭐⭐ Satisfied",
+                "⭐⭐⭐⭐⭐ Very Satisfied",
+              ],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "What did you like most about the product?",
+            config: {
+              required: false,
+              placeholder: "Describe what you enjoyed...",
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "What could we improve?",
+            config: {
+              required: true,
+              placeholder: "Please be as specific as possible...",
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.DROPDOWN,
+            label:
+              "How likely are you to recommend us to a friend or colleague?",
+            config: {
+              required: true,
+              options: [
+                "Very Unlikely",
+                "Unlikely",
                 "Neutral",
-                "Unsatisfied",
-                "Very Unsatisfied",
+                "Likely",
+                "Very Likely",
+              ],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.IMAGE,
+            label: "If you encountered an issue, please upload a screenshot.",
+            config: { required: false },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.CHECKBOX,
+            label: "May we contact you to follow up on your feedback?",
+            config: { required: false },
+          },
+        ],
+      },
+    ],
+  },
+
+  // --- TEMPLATE 4: NEW Event Registration ---
+  {
+    id: uuidv4(),
+    name: "Event Registration Form",
+    sections: [
+      {
+        id: uuidv4(),
+        title: "Main Registration",
+        fields: [
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.LABEL,
+            label: "Register for Our Annual Tech Summit 2025",
+            config: { level: "h1" },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label: "Full Name",
+            config: { required: true },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label: "Email for Communication",
+            config: { required: true },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label: "Company / Organization",
+            config: { required: false },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.DROPDOWN,
+            label: "Ticket Type",
+            config: {
+              required: true,
+              options: [
+                "General Admission - $99",
+                "VIP Pass - $299",
+                "Student Pass - $49",
+              ],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.RADIO,
+            label: "Dietary Restrictions",
+            config: {
+              required: true,
+              options: ["None", "Vegetarian", "Vegan", "Gluten-Free"],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.CHECKBOX,
+            label:
+              "I would like to subscribe to the event newsletter for updates.",
+            config: { required: false },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "Any specific accessibility requirements?",
+            config: {
+              required: false,
+              placeholder: "Let us know how we can help...",
+            },
+          },
+        ],
+      },
+    ],
+  },
+
+  // --- TEMPLATE 5: NEW Detailed Bug Report ---
+  {
+    id: uuidv4(),
+    name: "Detailed Bug Report",
+    sections: [
+      {
+        id: uuidv4(),
+        title: "Bug Report Details",
+        fields: [
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.LABEL,
+            label: "Submit a Bug Report",
+            config: { level: "h2" },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label: "Briefly, what is the issue?",
+            config: {
+              required: true,
+              placeholder:
+                "e.g., 'Save button is not working on the builder page'",
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "Steps to Reproduce",
+            config: {
+              required: true,
+              placeholder:
+                "Please list the exact steps needed to make the bug appear...",
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "Expected vs. Actual Behavior",
+            config: {
+              required: true,
+              placeholder:
+                "What did you expect to happen, and what actually happened?",
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.DROPDOWN,
+            label: "Issue Severity",
+            config: {
+              required: true,
+              options: [
+                "Critical (Blocks all work)",
+                "High (Major feature broken)",
+                "Medium (Inconvenient)",
+                "Low (Cosmetic issue)",
               ],
             },
           },
           {
             id: uuidv4(),
             type: FIELD_TYPES.TEXT,
-            label: "Comments",
+            label: "Browser & OS Version",
             config: {
-              required: false,
-              multiline: true,
-              placeholder: "Your feedback helps us improve...",
+              required: true,
+              placeholder: "e.g., Chrome 125 on macOS Sonoma",
             },
           },
           {
             id: uuidv4(),
-            type: FIELD_TYPES.BOOLEAN,
-            label: "May we contact you about your feedback?",
+            type: FIELD_TYPES.IMAGE,
+            label: "Upload Screenshot or Video of the Bug",
+            config: { required: true },
+          },
+        ],
+      },
+    ],
+  },
+
+  // --- TEMPLATE 6: NEW Course Evaluation Survey ---
+  {
+    id: uuidv4(),
+    name: "Course Evaluation Survey",
+    sections: [
+      {
+        id: uuidv4(),
+        title: "Course Feedback",
+        fields: [
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.LABEL,
+            label: "Course Feedback Survey",
+            config: { level: "h1" },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label: "Course Name",
+            config: { required: true },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.TEXT,
+            label: "Instructor's Name",
+            config: { required: true },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.RADIO,
+            label: "The course content was well-organized and easy to follow.",
+            config: {
+              required: true,
+              options: [
+                "Strongly Disagree",
+                "Disagree",
+                "Neutral",
+                "Agree",
+                "Strongly Agree",
+              ],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.RADIO,
+            label: "The instructor was knowledgeable and engaging.",
+            config: {
+              required: true,
+              options: [
+                "Strongly Disagree",
+                "Disagree",
+                "Neutral",
+                "Agree",
+                "Strongly Agree",
+              ],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.RADIO,
+            label: "The course materials (slides, assignments) were helpful.",
+            config: {
+              required: true,
+              options: [
+                "Strongly Disagree",
+                "Disagree",
+                "Neutral",
+                "Agree",
+                "Strongly Agree",
+              ],
+            },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "What was the most valuable part of this course?",
             config: { required: false },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.PARAGRAPH,
+            label: "How could this course be improved for future students?",
+            config: { required: true },
+          },
+          {
+            id: uuidv4(),
+            type: FIELD_TYPES.DROPDOWN,
+            label: "Overall, how would you rate this course?",
+            config: {
+              required: true,
+              options: ["Poor", "Fair", "Good", "Very Good", "Excellent"],
+            },
           },
         ],
       },

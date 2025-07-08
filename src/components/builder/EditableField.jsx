@@ -1,17 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
-import {
-  Grip,
-  Type,
-  AlignLeft,
-  CheckSquare,
-  CircleDot,
-  ToggleRight,
-  UploadCloud,
-  Image as ImageIcon,
-  Heading1,
-} from "lucide-react";
+import { Grip } from "lucide-react";
 import { Input } from "../ui/Input";
 import { FIELD_TYPES } from "../../lib/constants";
 import {
@@ -21,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/Select";
+import { UploadCloud, Image as ImageIcon } from "lucide-react";
 
 const EditableField = ({ field, onClick, isActive }) => {
   const {
@@ -42,10 +33,6 @@ const EditableField = ({ field, onClick, isActive }) => {
     opacity: isDragging ? 0.5 : 1,
   };
 
-  /**
-   * Renders a high-fidelity, disabled preview of the actual form element.
-   * This provides a much better UX than a generic input box.
-   */
   const renderFieldPreview = () => {
     switch (field.type) {
       case FIELD_TYPES.LABEL:
@@ -55,7 +42,6 @@ const EditableField = ({ field, onClick, isActive }) => {
             {field.label}
           </Tag>
         );
-
       case FIELD_TYPES.TEXT:
         return (
           <Input
@@ -63,7 +49,6 @@ const EditableField = ({ field, onClick, isActive }) => {
             placeholder={field.config.placeholder || "User input..."}
           />
         );
-
       case FIELD_TYPES.PARAGRAPH:
         return (
           <textarea
@@ -72,7 +57,6 @@ const EditableField = ({ field, onClick, isActive }) => {
             className="flex w-full min-h-[80px] rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500"
           />
         );
-
       case FIELD_TYPES.DROPDOWN:
         return (
           <Select disabled>
@@ -88,7 +72,6 @@ const EditableField = ({ field, onClick, isActive }) => {
             </SelectContent>
           </Select>
         );
-
       case FIELD_TYPES.RADIO:
         return (
           <div className="space-y-2">
@@ -106,7 +89,6 @@ const EditableField = ({ field, onClick, isActive }) => {
               ))}
           </div>
         );
-
       case FIELD_TYPES.CHECKBOX:
         return (
           <div className="flex items-center gap-2">
@@ -118,7 +100,6 @@ const EditableField = ({ field, onClick, isActive }) => {
             <label className="font-medium text-slate-800">{field.label}</label>
           </div>
         );
-
       case FIELD_TYPES.UPLOAD:
       case FIELD_TYPES.IMAGE:
         return (
@@ -131,7 +112,6 @@ const EditableField = ({ field, onClick, isActive }) => {
             <span className="text-sm font-medium">{field.label}</span>
           </div>
         );
-
       default:
         return <Input disabled placeholder="Undefined field type" />;
     }
@@ -142,22 +122,18 @@ const EditableField = ({ field, onClick, isActive }) => {
       ref={setNodeRef}
       style={style}
       layoutId={`field-container-${field.id}`}
+      {...attributes}
       onClick={onClick}
       className={`relative w-full cursor-pointer rounded-lg border bg-white p-4 shadow-sm transition-all hover:shadow-md ${isActive ? "border-indigo-500 ring-2 ring-indigo-500/20" : "border-slate-200 hover:border-slate-300"}`}
     >
       <div className="flex w-full items-start gap-4">
-        {/* Drag Handle */}
         <div
           {...listeners}
-          {...attributes}
           className="cursor-grab touch-none p-1.5 pt-2 text-slate-400"
         >
           <Grip className="h-5 w-5" />
         </div>
-
-        {/* Main Content Area */}
         <div className="flex-grow">
-          {/* Label is rendered outside for most types, but inside for Checkbox and Label types */}
           {field.type !== FIELD_TYPES.CHECKBOX &&
             field.type !== FIELD_TYPES.LABEL && (
               <label className="block mb-2 font-medium text-slate-800">

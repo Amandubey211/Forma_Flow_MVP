@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { useTemplates } from "../context/TemplateContext";
+import { useDebounce } from "../hooks/useDebounce";
 import BuilderHeader from "../components/builder/BuilderHeader";
 import FieldPalette from "../components/builder/FieldPalette";
 import EditableField from "../components/builder/EditableField";
@@ -26,7 +27,6 @@ import { Button } from "../components/ui/Button";
 import { FIELD_TYPES } from "../lib/constants";
 import { Grip, Plus } from "lucide-react";
 
-// Helper to create new fields
 const createNewField = (type) => ({
   id: uuidv4(),
   type,
@@ -37,11 +37,8 @@ const createNewField = (type) => ({
       : { required: false, placeholder: "" },
 });
 
-// A dedicated component for the droppable empty area
 const DroppableEmptyArea = ({ children }) => {
-  const { setNodeRef } = useDroppable({
-    id: "canvas-droppable-area",
-  });
+  const { setNodeRef } = useDroppable({ id: "canvas-droppable-area" });
   return (
     <div
       ref={setNodeRef}
@@ -60,6 +57,7 @@ const BuilderPage = () => {
   const [template, setTemplate] = useState(null);
   const [initialTemplateState, setInitialTemplateState] = useState(null);
   const [isDirty, setIsDirty] = useState(false);
+  const [saveStatus, setSaveStatus] = useState("saved");
   const [activeFieldId, setActiveFieldId] = useState(null);
   const [activeDragItem, setActiveDragItem] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -69,8 +67,7 @@ const BuilderPage = () => {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
   const mainSection = template?.sections[0];
-
-  // --- All Logic and Handlers are now correctly inside the component ---
+  const debouncedTemplate = useDebounce(template, 1500);
 
   useEffect(() => {
     const fetchedTemplate = getTemplateById(templateId);
@@ -99,28 +96,32 @@ const BuilderPage = () => {
   }, [template, initialTemplateState]);
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      if (isDirty) {
-        event.preventDefault();
-        event.returnValue = "";
-      }
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+    if (isDirty) setSaveStatus("dirty");
   }, [isDirty]);
+
+  useEffect(() => {
+    if (isDirty && debouncedTemplate) {
+      setSaveStatus("saving");
+      setTimeout(() => {
+        updateTemplate(debouncedTemplate);
+        setInitialTemplateState(JSON.parse(JSON.stringify(debouncedTemplate)));
+        setSaveStatus("saved");
+      }, 700);
+    }
+  }, [debouncedTemplate]);
 
   useEffect(() => {
     if (activeFieldId) {
       const node = fieldRefs.current.get(activeFieldId);
-      if (node) {
-        setTimeout(() => {
-          node.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 100);
-      }
+      if (node)
+        setTimeout(
+          () => node.scrollIntoView({ behavior: "smooth", block: "center" }),
+          100
+        );
     }
   }, [activeFieldId]);
 
-  const updateField = (fieldId, updatedField) => {
+  const updateField = (fieldId, updatedField) =>
     setTemplate((prev) => ({
       ...prev,
       sections: prev.sections.map((section) => ({
@@ -130,7 +131,6 @@ const BuilderPage = () => {
         ),
       })),
     }));
-  };
 
   const addField = (fieldType, index) => {
     const newField = createNewField(fieldType);
@@ -183,6 +183,7 @@ const BuilderPage = () => {
     setActiveDragItem(null);
     const { active, over } = event;
     if (!over) return;
+
     if (active.data.current?.isPaletteItem) {
       let index = mainSection.fields.length;
       if (over.data.current?.isSortable) {
@@ -193,9 +194,11 @@ const BuilderPage = () => {
       addField(active.data.current.type, index);
       return;
     }
+
     if (active.id !== over.id && over.data.current?.isSortable) {
       const oldIndex = mainSection.fields.findIndex((f) => f.id === active.id);
       const newIndex = mainSection.fields.findIndex((f) => f.id === over.id);
+      if (oldIndex === -1 || newIndex === -1) return; // Safety check
       setTemplate((prev) => {
         const newFields = arrayMove(
           prev.sections[0].fields,
@@ -209,27 +212,28 @@ const BuilderPage = () => {
     }
   };
 
-  const handleSave = () => {
-    setActiveFieldId(null);
-    setInitialTemplateState(JSON.parse(JSON.stringify(template)));
-    setIsDirty(false);
-    setTimeout(() => {
-      updateTemplate(template);
-      // navigate("/dashboard"); // Can be re-enabled if you want to navigate away on save
-    }, 100);
+  const handleSaveAndClose = () => {
+    setSaveStatus("saving");
+    updateTemplate(template);
+    toast.success("Template saved successfully!");
+    setTimeout(() => navigate("/dashboard"), 500);
   };
 
-  // The loading guard now works correctly
   if (!template || !mainSection)
     return (
       <div className="flex h-screen items-center justify-center bg-slate-50">
-        Loading...
+        <p>Loading Builder...</p>
       </div>
     );
 
   return (
     <div className="flex h-screen w-full flex-col bg-slate-100">
-      <BuilderHeader templateName={template.name} onSave={handleSave} />
+      <BuilderHeader
+        templateId={templateId}
+        templateName={template.name}
+        onSave={handleSaveAndClose}
+        saveStatus={saveStatus}
+      />
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -305,7 +309,6 @@ const BuilderPage = () => {
                   ))}
                 </div>
               </SortableContext>
-
               {mainSection.fields.length === 0 && (
                 <DroppableEmptyArea>
                   <h3 className="text-lg font-medium text-slate-800">
