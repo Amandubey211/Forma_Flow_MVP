@@ -1,6 +1,6 @@
 // import LenisWrapper from "../Wrappers/LenisWrapper";
 import { Navbar } from "./layout/Navbar";
-import SEO from "./SEO/seo";
+import SEO from "./SEO/SEO";
 
 const AppLayout = ({ children, seoProps }) => {
   return (
