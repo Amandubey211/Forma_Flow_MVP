@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import AppLayout from "./components/AppLayout";
+import Loader from "./components/ui/Loader"; // 1. Import the new Loader component
 
 // Lazy loaded pages
 const LandingPage = lazy(() => import("./pages/LandingPage"));
@@ -22,7 +23,8 @@ const App = () => {
                 "Create beautiful, powerful, and accessible forms in minutes with our drag-and-drop form builder.",
             }}
           >
-            <Suspense fallback={<div>Loading...</div>}>
+            {/* 2. Use the Loader component as the fallback */}
+            <Suspense fallback={<Loader />}>
               <LandingPage />
             </Suspense>
           </AppLayout>
@@ -39,7 +41,7 @@ const App = () => {
                 "Manage your forms and view analytics in your FormaFlow dashboard.",
             }}
           >
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <DashboardPage />
             </Suspense>
           </AppLayout>
@@ -56,26 +58,20 @@ const App = () => {
                 "Manage your forms and view analytics in your FormaFlow Builder.",
             }}
           >
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <BuilderPage />
             </Suspense>
           </AppLayout>
         }
       />
 
+      {/* For the full-screen form page, we don't use AppLayout */}
       <Route
         path="/form/:templateId"
         element={
-          <AppLayout
-            seoProps={{
-              title: "Form",
-              description: "Form",
-            }}
-          >
-            <Suspense fallback={<div>Loading...</div>}>
-              <FormPage />
-            </Suspense>
-          </AppLayout>
+          <Suspense fallback={<Loader />}>
+            <FormPage />
+          </Suspense>
         }
       />
 
@@ -88,7 +84,7 @@ const App = () => {
               description: "The page you're looking for doesn't exist.",
             }}
           >
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <NotFoundPage />
             </Suspense>
           </AppLayout>
