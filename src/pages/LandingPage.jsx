@@ -10,7 +10,6 @@ import {
   MoveRight,
 } from "lucide-react";
 
-import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
 import FormBuilderShowcase from "../assets/Landingpage/form-builder-showcase.png";
 import { SocialProof } from "../components/sections/Landing/SocialProof";
