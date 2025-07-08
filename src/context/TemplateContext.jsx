@@ -22,11 +22,23 @@ export const TemplateProvider = ({ children }) => {
     toast.success("Template created successfully!");
   };
 
-  const updateTemplate = (updatedTemplate) => {
+  // --- THIS IS THE ROBUST, CORRECTED FUNCTION ---
+  /**
+   * Updates a template with new data. Can handle full or partial updates.
+   * @param {string} templateId - The ID of the template to update.
+   * @param {object} updatedData - An object containing the properties to update.
+   */
+  const updateTemplate = (templateId, updatedData) => {
     setTemplates((prev) =>
-      prev.map((t) => (t.id === updatedTemplate.id ? updatedTemplate : t))
+      prev.map((t) => {
+        if (t.id === templateId) {
+          // Merge existing template with the new updated data
+          return { ...t, ...updatedData };
+        }
+        return t;
+      })
     );
-    toast.success("Template saved!");
+    // Note: We let the component calling this function decide whether to show a toast.
   };
 
   const deleteTemplate = (templateId) => {

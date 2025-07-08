@@ -112,28 +112,28 @@ export const landingPageConfig = {
 
   footer: {
     logo: "FormaFlow",
-    tagline: "Build better forms, faster.",
+    tagline: "Build forms that feel intuitive.",
+    copyright: `© ${new Date().getFullYear()} FormaFlow. All rights reserved.`,
+    socials: [
+      { name: "Twitter", url: "https://x.com/AmanDub97115331" },
+      { name: "GitHub", url: "https://github.com/Amandubey211" },
+      {
+        name: "LinkedIn",
+        url: "https://www.linkedin.com/in/profile-amandubey/",
+      },
+    ],
     links: {
       product: [
-        { name: "Features", path: "/features" },
-        { name: "Pricing", path: "/pricing" },
-        { name: "Integrations", path: "/integrations" },
-        { name: "Changelog", path: "/changelog" },
+        { name: "Features", path: "/#features" },
+        { name: "Pricing", path: "#" },
+        { name: "Templates", path: "/dashboard" },
       ],
       company: [
         { name: "About Us", path: "/about" },
-        { name: "Careers", path: "/careers" },
-        { name: "Contact", path: "/contact" },
+        { name: "Careers", path: "#" },
+        { name: "Contact", path: "mailto:amandubey8833@gmail.com" },
       ],
-      resources: [
-        { name: "Blog", path: "/blog" },
-        { name: "Support", path: "/support" },
-        { name: "API Docs", path: "/api" },
-      ],
-      legal: [
-        { name: "Privacy Policy", path: "/privacy" },
-        { name: "Terms of Service", path: "/terms" },
-      ],
+      // ... other links
     },
     copyright: `© ${new Date().getFullYear()} FormaFlow, Inc. All rights reserved.`,
   },

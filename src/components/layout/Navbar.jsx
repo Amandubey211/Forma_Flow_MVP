@@ -39,6 +39,14 @@ export const Navbar = () => {
     setHoveredLink(null);
   };
 
+  const isActive = (path) => {
+    // Handle exact matches and subpaths
+    if (path === "/") {
+      return location.pathname === path;
+    }
+    return location.pathname.startsWith(path);
+  };
+
   const menuVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: {
@@ -86,6 +94,11 @@ export const Navbar = () => {
         ease: [0.25, 0.1, 0.25, 1],
       },
     }),
+    active: {
+      width: "100%",
+      opacity: 1,
+      backgroundColor: "#1e293b", // slate-900
+    },
   };
 
   return (
@@ -113,7 +126,11 @@ export const Navbar = () => {
               >
                 <Link
                   to={link.path}
-                  className="relative z-10 block font-medium text-slate-600 transition-colors hover:text-slate-900 px-1 py-2"
+                  className={`relative z-10 block font-medium px-1 py-2 transition-colors ${
+                    isActive(link.path)
+                      ? "text-slate-900 font-semibold"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
                 >
                   <motion.span variants={linkVariants}>{link.name}</motion.span>
                 </Link>
@@ -121,6 +138,13 @@ export const Navbar = () => {
                   className="absolute bottom-0 left-0 h-0.5 bg-slate-900 rounded-full"
                   variants={underlineVariants}
                   custom={i}
+                  animate={
+                    isActive(link.path)
+                      ? "active"
+                      : hoveredLink === i
+                        ? "hover"
+                        : "rest"
+                  }
                   style={{ originX: hoveredLink === i ? 0 : 1 }}
                 />
               </motion.div>
@@ -140,7 +164,9 @@ export const Navbar = () => {
             <Link to="/dashboard">
               <Button
                 variant="ghost"
-                className="relative overflow-hidden group"
+                className={`relative overflow-hidden group ${
+                  isActive("/dashboard") ? "bg-slate-100" : ""
+                }`}
               >
                 <span className="relative z-10">Login</span>
                 <motion.span
@@ -152,31 +178,6 @@ export const Navbar = () => {
               </Button>
             </Link>
           </motion.div>
-
-          {/* Get Started Button with floating arrow
-          {isHomePage && (
-            <motion.div whileHover={{ scale: 1.03 }}>
-              <Link to="/dashboard">
-                <Button className="group">
-                  <motion.span className="inline-flex items-center">
-                    Get Started
-                    <motion.span
-                      className="ml-2 inline-block"
-                      initial={{ x: 0 }}
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: 2,
-                        ease: "easeInOut",
-                      }}
-                    >
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </motion.span>
-                  </motion.span>
-                </Button>
-              </Link>
-            </motion.div>
-          )} */}
         </div>
 
         {/* Mobile Menu Button with enhanced animation */}
@@ -239,10 +240,20 @@ export const Navbar = () => {
                 >
                   <Link
                     to={link.path}
-                    className="text-lg font-medium text-slate-700 relative group"
+                    className={`text-lg font-medium relative group ${
+                      isActive(link.path)
+                        ? "text-slate-900 font-semibold"
+                        : "text-slate-700"
+                    }`}
                   >
                     {link.name}
-                    <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-slate-900 transition-all duration-300 group-hover:w-full" />
+                    <span
+                      className={`absolute bottom-0 left-0 h-0.5 transition-all duration-300 ${
+                        isActive(link.path)
+                          ? "w-full bg-slate-900"
+                          : "w-0 bg-slate-900 group-hover:w-full"
+                      }`}
+                    />
                   </Link>
                 </motion.div>
               ))}
@@ -266,7 +277,12 @@ export const Navbar = () => {
                   className="w-full"
                 >
                   <Link to="/dashboard">
-                    <Button variant="ghost" className="w-full">
+                    <Button
+                      variant="ghost"
+                      className={`w-full ${
+                        isActive("/dashboard") ? "bg-slate-100" : ""
+                      }`}
+                    >
                       Login
                     </Button>
                   </Link>

@@ -27,6 +27,7 @@ import { Button } from "../components/ui/Button";
 import { FIELD_TYPES } from "../lib/constants";
 import { Grip, Plus } from "lucide-react";
 
+// Helper to create new fields
 const createNewField = (type) => ({
   id: uuidv4(),
   type,
@@ -37,6 +38,7 @@ const createNewField = (type) => ({
       : { required: false, placeholder: "" },
 });
 
+// A dedicated component for the droppable empty area
 const DroppableEmptyArea = ({ children }) => {
   const { setNodeRef } = useDroppable({ id: "canvas-droppable-area" });
   return (
@@ -56,8 +58,8 @@ const BuilderPage = () => {
 
   const [template, setTemplate] = useState(null);
   const [initialTemplateState, setInitialTemplateState] = useState(null);
-  const [isDirty, setIsDirty] = useState(false);
-  const [saveStatus, setSaveStatus] = useState("saved");
+  const [saveStatus, setSaveStatus] = useState("saved"); // 'saved', 'saving', 'dirty'
+
   const [activeFieldId, setActiveFieldId] = useState(null);
   const [activeDragItem, setActiveDragItem] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -66,9 +68,15 @@ const BuilderPage = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
+
   const mainSection = template?.sections[0];
   const debouncedTemplate = useDebounce(template, 1500);
 
+  // Derived state for checking if there are unsaved changes
+  const isDirty =
+    JSON.stringify(template) !== JSON.stringify(initialTemplateState);
+
+  // Effect to fetch and initialize the template
   useEffect(() => {
     const fetchedTemplate = getTemplateById(templateId);
     if (fetchedTemplate) {
@@ -80,57 +88,76 @@ const BuilderPage = () => {
             : [{ id: uuidv4(), title: "Form Fields", fields: [] }],
       };
       setTemplate(templateWithSections);
-      setInitialTemplateState(JSON.parse(JSON.stringify(templateWithSections)));
+      setInitialTemplateState(templateWithSections); // Set initial state for 'isDirty' comparison
     } else {
       toast.error("Template not found!");
       navigate("/dashboard");
     }
   }, [templateId, getTemplateById, navigate]);
 
+  // Effect to update the visual save status indicator
   useEffect(() => {
-    if (template && initialTemplateState) {
-      const hasChanged =
-        JSON.stringify(template) !== JSON.stringify(initialTemplateState);
-      setIsDirty(hasChanged);
+    if (isDirty) {
+      setSaveStatus("dirty");
     }
-  }, [template, initialTemplateState]);
-
-  useEffect(() => {
-    if (isDirty) setSaveStatus("dirty");
   }, [isDirty]);
 
+  // Effect to handle the auto-saving logic
   useEffect(() => {
-    if (isDirty && debouncedTemplate) {
+    // We only want to save if there's a debounced template and it's different from the last saved state
+    if (
+      debouncedTemplate &&
+      JSON.stringify(debouncedTemplate) !== JSON.stringify(initialTemplateState)
+    ) {
       setSaveStatus("saving");
       setTimeout(() => {
-        updateTemplate(debouncedTemplate);
-        setInitialTemplateState(JSON.parse(JSON.stringify(debouncedTemplate)));
+        // Pass the full debounced template object to be merged in the context
+        updateTemplate(debouncedTemplate.id, debouncedTemplate);
+        // CRITICAL: Update the initial state to the new "saved" state
+        setInitialTemplateState(debouncedTemplate);
         setSaveStatus("saved");
       }, 700);
     }
-  }, [debouncedTemplate]);
+  }, [debouncedTemplate, initialTemplateState, updateTemplate]);
 
+  // Effect to warn the user before leaving with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (isDirty) {
+        event.preventDefault();
+        event.returnValue = ""; // Required for cross-browser compatibility
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isDirty]);
+
+  // Effect to scroll the active field into view
   useEffect(() => {
     if (activeFieldId) {
       const node = fieldRefs.current.get(activeFieldId);
-      if (node)
-        setTimeout(
-          () => node.scrollIntoView({ behavior: "smooth", block: "center" }),
-          100
-        );
+      if (node) {
+        setTimeout(() => {
+          node.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 100);
+      }
     }
   }, [activeFieldId]);
 
-  const updateField = (fieldId, updatedField) =>
-    setTemplate((prev) => ({
-      ...prev,
-      sections: prev.sections.map((section) => ({
-        ...section,
-        fields: section.fields.map((f) =>
-          f.id === fieldId ? updatedField : f
-        ),
-      })),
-    }));
+  const updateField = (fieldId, updatedField) => {
+    setTemplate((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        sections: prev.sections.map((section) => ({
+          ...section,
+          fields: section.fields.map((f) =>
+            f.id === fieldId ? updatedField : f
+          ),
+        })),
+      };
+    });
+  };
 
   const addField = (fieldType, index) => {
     const newField = createNewField(fieldType);
@@ -183,7 +210,6 @@ const BuilderPage = () => {
     setActiveDragItem(null);
     const { active, over } = event;
     if (!over) return;
-
     if (active.data.current?.isPaletteItem) {
       let index = mainSection.fields.length;
       if (over.data.current?.isSortable) {
@@ -194,11 +220,10 @@ const BuilderPage = () => {
       addField(active.data.current.type, index);
       return;
     }
-
     if (active.id !== over.id && over.data.current?.isSortable) {
       const oldIndex = mainSection.fields.findIndex((f) => f.id === active.id);
       const newIndex = mainSection.fields.findIndex((f) => f.id === over.id);
-      if (oldIndex === -1 || newIndex === -1) return; // Safety check
+      if (oldIndex === -1 || newIndex === -1) return;
       setTemplate((prev) => {
         const newFields = arrayMove(
           prev.sections[0].fields,
@@ -214,17 +239,20 @@ const BuilderPage = () => {
 
   const handleSaveAndClose = () => {
     setSaveStatus("saving");
-    updateTemplate(template);
-    toast.success("Template saved successfully!");
+    if (template) {
+      updateTemplate(template.id, template);
+      toast.success("Template saved successfully!");
+    }
     setTimeout(() => navigate("/dashboard"), 500);
   };
 
-  if (!template || !mainSection)
+  if (!template || !mainSection) {
     return (
       <div className="flex h-screen items-center justify-center bg-slate-50">
         <p>Loading Builder...</p>
       </div>
     );
+  }
 
   return (
     <div className="flex h-screen w-full flex-col bg-slate-100">
@@ -259,8 +287,11 @@ const BuilderPage = () => {
                     >
                       <motion.div
                         ref={(node) => {
-                          if (node) fieldRefs.current.set(field.id, node);
-                          else fieldRefs.current.delete(field.id);
+                          if (node) {
+                            fieldRefs.current.set(field.id, node);
+                          } else {
+                            fieldRefs.current.delete(field.id);
+                          }
                         }}
                         layout
                       >
