@@ -1,10 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import DashboardPage from "./pages/DashboardPage";
-import BuilderPage from "./pages/BuilderPage";
+import { Suspense, lazy } from "react";
 import AppLayout from "./components/AppLayout";
-import FormPage from "./pages/FormPage"; // donrt
+
+// Lazy loaded pages
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const BuilderPage = lazy(() => import("./pages/BuilderPage"));
+const FormPage = lazy(() => import("./pages/FormPage"));
 
 const App = () => {
   return (
@@ -19,7 +22,9 @@ const App = () => {
                 "Create beautiful, powerful, and accessible forms in minutes with our drag-and-drop form builder.",
             }}
           >
-            <LandingPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <LandingPage />
+            </Suspense>
           </AppLayout>
         }
       />
@@ -34,7 +39,9 @@ const App = () => {
                 "Manage your forms and view analytics in your FormaFlow dashboard.",
             }}
           >
-            <DashboardPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <DashboardPage />
+            </Suspense>
           </AppLayout>
         }
       />
@@ -49,10 +56,13 @@ const App = () => {
                 "Manage your forms and view analytics in your FormaFlow Builder.",
             }}
           >
-            <BuilderPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <BuilderPage />
+            </Suspense>
           </AppLayout>
         }
       />
+
       <Route
         path="/form/:templateId"
         element={
@@ -62,10 +72,13 @@ const App = () => {
               description: "Form",
             }}
           >
-            <FormPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <FormPage />
+            </Suspense>
           </AppLayout>
         }
       />
+
       <Route
         path="*"
         element={
@@ -75,7 +88,9 @@ const App = () => {
               description: "The page you're looking for doesn't exist.",
             }}
           >
-            <NotFoundPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <NotFoundPage />
+            </Suspense>
           </AppLayout>
         }
       />
