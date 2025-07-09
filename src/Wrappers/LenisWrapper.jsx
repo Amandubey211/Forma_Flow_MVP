@@ -1,4 +1,4 @@
-import useLenis from "../Hooks/useLenis";
+import useLenis from "../hooks/useLenis";
 const LenisWrapper = ({ children }) => {
   useLenis();
   return <div>{children}</div>;
