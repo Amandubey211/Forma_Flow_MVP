@@ -13,9 +13,9 @@ FormaFlow is a dynamic, schema-driven Form Template Builder that empowers users 
 
 Experience the live application, see a walkthrough of its core features, and learn more about the developer behind it.
 
-*   **Live Application:** **[Your Live Vercel/Netlify Deployment Link Here]**
+*   **Live Application:** **https://formaflow.vercel.app/**
 *   **Video Showcase (2 min):** **[Your Loom/YouTube Demo Video Link Here]**
-*   **About The Developer:** **[Your Live Deployment Link Here]/about**
+*   **About The Developer:** **https://amandubey.vercel.app/about | https://www.linkedin.com/in/profile-amandubey/**
 
 ---
 
