@@ -110,6 +110,22 @@ const App = () => {
           </AppLayout>
         }
       />
+      <Route
+        path="/login"
+        element={
+          <AppLayout
+            seoProps={{
+              title: "Loading page | FormaFlow",
+              description:
+                "Choose the perfect plan for your form-building needs. Start for free.",
+            }}
+          >
+            <Suspense fallback={<Loader />}>
+              <Loader />
+            </Suspense>
+          </AppLayout>
+        }
+      />
 
       {/* Not Found (404) Route */}
       <Route

@@ -161,11 +161,11 @@ export const Navbar = () => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            <Link to="/dashboard">
+            <Link to="/login">
               <Button
                 variant="ghost"
                 className={`relative overflow-hidden group ${
-                  isActive("/dashboard") ? "bg-slate-100" : ""
+                  isActive("/login") ? "bg-slate-100" : ""
                 }`}
               >
                 <span className="relative z-10">Login</span>
@@ -276,11 +276,11 @@ export const Navbar = () => {
                   whileHover={{ scale: 1.02 }}
                   className="w-full"
                 >
-                  <Link to="/dashboard">
+                  <Link to="/login">
                     <Button
                       variant="ghost"
                       className={`w-full ${
-                        isActive("/dashboard") ? "bg-slate-100" : ""
+                        isActive("/login") ? "bg-slate-100" : ""
                       }`}
                     >
                       Login
