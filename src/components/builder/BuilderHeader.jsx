@@ -60,13 +60,16 @@ const BuilderHeader = ({ templateId, templateName, onSave, saveStatus }) => {
     }
   };
 
+  // --- THIS IS THE CHANGE ---
+  // Uses React Router's navigate function for a seamless, in-app transition without a page reload.
+  // This is the standard way to navigate within an SPA.
+  // Note: For direct URL access or page reloads on the preview route to work in production (e.g., on Vercel),
+  // you will need to configure server-side rewrites to point all paths to your index.html.
   const handlePreviewClick = () => {
-    window.open(`/form/${templateId}`, "_blank");
+    navigate(`/form/${templateId}`);
   };
 
   return (
-    // --- THIS IS THE CHANGE ---
-    // Height reduced to h-14 (56px) and z-index increased to ensure it's on top.
     <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-lg sm:px-6">
       <div className="flex items-center gap-2">
         <Button

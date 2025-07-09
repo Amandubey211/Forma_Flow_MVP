@@ -47,9 +47,9 @@ const FormPage = () => {
     <div className="relative min-h-screen w-full dotted-bg flex items-center justify-center p-4 lg:p-8">
       {/* 2. Add the floating "Back" button */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10">
-        <Button variant="secondary" onClick={() => navigate("/dashboard")}>
+        <Button variant="secondary" onClick={() => navigate(-1)}>
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Dashboard
+          Back
         </Button>
       </div>
 
