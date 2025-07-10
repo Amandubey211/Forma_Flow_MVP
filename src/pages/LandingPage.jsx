@@ -104,7 +104,7 @@ const LandingPage = () => {
         >
           <main className="flex-grow">
             {/* Hero Section */}
-            <section className="container mx-auto max-w-screen-lg text-center py-20 md:py-32 px-4">
+            <section className="container mx-auto max-w-screen-lg text-center py-8 md:py-14 px-4">
               <div>
                 <SplitText
                   text={hero.title}
