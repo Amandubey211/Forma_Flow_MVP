@@ -4,7 +4,7 @@ const SpotlightCard = ({
   children,
   className = "",
   // Default spotlight color is now a very subtle, translucent gray
-  spotlightColor = "rgba(0, 0, 0, 0.04)",
+  spotlightColor = "rgb(79, 57, 246)",
 }) => {
   const divRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
