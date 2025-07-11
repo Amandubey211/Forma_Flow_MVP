@@ -1,0 +1,53 @@
+# File: .github/workflows/ci.yml
+
+name: FormaFlow CI
+
+# This workflow triggers on pushes and pull requests to the 'main' branch.
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  # The single job in this workflow, responsible for building and testing.
+  build-and-test:
+    # It will run on the latest version of an Ubuntu virtual machine.
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checks out your repository's code so the job can access it.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Sets up Node.js environment. We specify version 18.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      # Step 3: Sets up a cache for npm dependencies. This significantly speeds up
+      # the 'npm ci' step on subsequent runs by reusing downloaded packages.
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 4: Installs dependencies using 'npm ci'. This is faster and more
+      # reliable for CI environments than 'npm install' because it uses the
+      # package-lock.json file to ensure exact dependency versions.
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 5: Runs the test suite. This executes the "test" script from your
+      # package.json, which you've configured to be "vitest run".
+      - name: Run tests
+        run: npm test
+
+      # Step 6: Runs the production build command. This step is crucial to
+      # catch any potential build errors before code is merged or deployed.
+      - name: Build project
+        run: npm run build
