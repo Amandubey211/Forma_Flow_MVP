@@ -111,7 +111,7 @@ const App = () => {
         }
       />
       <Route
-        path="/login"
+        path="/play"
         element={
           <AppLayout
             seoProps={{

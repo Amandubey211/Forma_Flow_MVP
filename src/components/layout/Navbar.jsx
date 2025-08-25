@@ -161,14 +161,14 @@ export const Navbar = () => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            <Link to="/login">
+            <Link to="/play">
               <Button
                 variant="ghost"
                 className={`relative overflow-hidden group ${
-                  isActive("/login") ? "bg-slate-100" : ""
+                  isActive("/play") ? "bg-slate-100" : ""
                 }`}
               >
-                <span className="relative z-10">Login</span>
+                <span className="relative z-10">Play</span>
                 <motion.span
                   className="absolute inset-0 bg-slate-100 rounded-md"
                   initial={{ scale: 0 }}
