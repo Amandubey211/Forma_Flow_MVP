@@ -1,21 +1,16 @@
-import Navbar from "./Navbar";
-import Hero from "./Hero";
+// import Hero from "./Hero";
 import Features from "./Features";
-import Testimonials from "./Testimonials";
 import Pricing from "./Pricing";
 import CTA from "./CTA";
-import Footer from "./Footer";
-
+import Hero from "./Hero"
 const LandingPage = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
-      <Navbar />
       <Hero />
+      {/* <Hero /> */}
       <Features />
-      <Testimonials />
       <Pricing />
       <CTA />
-      <Footer />
     </div>
   );
 };

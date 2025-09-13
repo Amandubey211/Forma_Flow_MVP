@@ -1,4 +1,5 @@
 // import LenisWrapper from "../Wrappers/LenisWrapper";
+import { Footer } from "./layout/Footer";
 import { Navbar } from "./layout/Navbar";
 import SEO from "./SEO/SEO";
 
@@ -12,6 +13,7 @@ const AppLayout = ({ children, seoProps }) => {
           {children}
           {/* <LenisWrapper>{children}</LenisWrapper> */}
         </main>
+        <Footer />
       </div>
     </>
   );

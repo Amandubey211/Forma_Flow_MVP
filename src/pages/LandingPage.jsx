@@ -12,9 +12,9 @@ import {
 } from "lucide-react";
 
 // Import your custom and UI components
-import { Footer } from "../components/layout/Footer";
-import { SocialProof } from "../components/sections/Landing/SocialProof";
-import { Testimonials } from "../components/sections/Landing/Testimonials";
+import { SocialProof } from "../components/landing/SocialProof";
+import { Testimonials } from "../components/landing/Testimonials";
+
 import { landingPageConfig } from "../config/landingPage";
 import { Button } from "../components/ui/Button";
 import BlurText from "../components/ui/BlurText";
@@ -136,7 +136,7 @@ const LandingPage = () => {
                 </motion.div>
               </div>
             </section>
-
+            {/* <Hero /> */}
             <SocialProof />
 
             {/* Interactive Feature Showcase with CircularGallery */}
@@ -216,7 +216,6 @@ const LandingPage = () => {
             </motion.section>
 
             <Testimonials />
-
             {/* Final CTA */}
             <section className="container mx-auto max-w-screen-lg text-center py-24 md:py-32 px-4">
               <SplitText
@@ -241,7 +240,6 @@ const LandingPage = () => {
               </div>
             </section>
           </main>
-          <Footer />
         </div>
       </div>
     </LenisWrapper>

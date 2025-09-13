@@ -12,7 +12,7 @@ import {
   Slack,
   Github,
 } from "lucide-react";
-import { landingPageConfig } from "../../../config/landingPage";
+import { landingPageConfig } from "../../config/landingPage";
 
 // Define the Icon components map (no type annotations needed in JS)
 const iconComponents = {
